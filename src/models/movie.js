@@ -8,7 +8,7 @@ const opts = { toJSON: { virtuals: true } };
 // Define schema for ratings
 const RatingSchema = new mongoose.Schema({
     // user who gave the rating
-    userId: [{ type: mongoose.Schema.Types.ObjectId, ref: "User" }],
+    userId: { type: mongoose.Schema.Types.ObjectId, ref: "User" },
     // rating of user
     rating: {
         type: Number,
@@ -68,7 +68,9 @@ MovieSchema.virtual("avgAudienceRating").get(function () {
     let avgRating = 0;
     let ratings = 0;
     this.audienceRatings.map((rating) => {
-        avgRating += rating.rating;
+        if (typeof rating.rating === "number") {
+            avgRating += rating.rating;
+        }
         ratings++;
     });
     avgRating = avgRating / ratings;

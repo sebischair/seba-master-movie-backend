@@ -11,6 +11,7 @@ router.post("/", middlewares.checkAuthentication, MovieController.create); // Cr
 router.get("/:id", MovieController.read); // Read a movie by Id
 router.put("/:id", middlewares.checkAuthentication, MovieController.update); // Update a movie by Id
 router.delete("/:id", middlewares.checkAuthentication, MovieController.remove); // Delete a movie by Id
+router.get("/rate/:id", MovieController.getRate); // Get the audience rating of this movie by Id
 router.put("/rate/:id", middlewares.checkAuthentication, MovieController.rate); // Rate movie with Id
 
 module.exports = router;

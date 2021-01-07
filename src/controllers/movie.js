@@ -100,18 +100,62 @@ const list = async (req, res) => {
     }
 };
 
+const getRate = async (req, res) => {
+    try {
+        let movieId = req.params.id;
+
+        // get the movie
+        let movieRating = await MovieModel.findById(movieId);
+
+        // extract the average audience rating
+        let rating = movieRating.avgAudienceRating;
+
+        // return average audience rating
+        return res.status(200).json({ rating: rating });
+    } catch (err) {
+        console.log(err);
+        return res.status(500).json({
+            error: "Internal server error",
+            message: err.message,
+        });
+    }
+};
+
 const rate = async (req, res) => {
     try {
         let votedMovieId = req.params.id;
 
-        let ratingObject = {
-            userId: req.userId,
-            rating: req.body.rating,
-        };
-
-        await MovieModel.findByIdAndUpdate(votedMovieId, {
-            $push: { audienceRatings: ratingObject },
+        // find a movie that has the id and is voted by the user
+        // returns null if the user has not voted this movie
+        let alreadyVotedMovie = await MovieModel.findOne({
+            _id: votedMovieId,
+            "audienceRatings.userId": req.userId,
         });
+
+        // check if user has already voted in this movie
+        if (alreadyVotedMovie !== null) {
+            // if the user has already voted update his voting entry
+            await MovieModel.updateOne(
+                {
+                    _id: votedMovieId,
+                    "audienceRatings.userId": req.userId,
+                },
+                {
+                    $set: {
+                        "audienceRatings.$.rating": req.body.rating,
+                    },
+                }
+            );
+        } else {
+            // if the user has not voted create a new rating entry
+            let ratingObject = {
+                userId: req.userId,
+                rating: req.body.rating,
+            };
+            await MovieModel.findByIdAndUpdate(votedMovieId, {
+                $push: { audienceRatings: ratingObject },
+            });
+        }
 
         return res.status(200).json({});
     } catch (err) {
@@ -130,4 +174,5 @@ module.exports = {
     remove,
     list,
     rate,
+    getRate,
 };
