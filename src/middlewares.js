@@ -11,7 +11,7 @@ const allowCrossDomain = (req, res, next) => {
 
     // intercept OPTIONS method
     if ("OPTIONS" == req.method) {
-        res.status(200).send(200);
+        res.sendStatus(200);
     } else {
         next();
     }
@@ -21,7 +21,7 @@ const checkAuthentication = (req, res, next) => {
     // check header or url parameters or post parameters for token
     let token = "";
     if (req.headers.authorization) {
-        token = req.headers.authorization.substring(4);
+        token = req.headers.authorization.split(" ")[1];
     }
 
     if (!token)
