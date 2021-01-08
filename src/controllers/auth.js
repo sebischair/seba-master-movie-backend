@@ -35,7 +35,7 @@ const login = async (req, res) => {
         // if user is found and password is valid
         // create a token
         const token = jwt.sign(
-            { id: user._id, username: user.username, role: user.role },
+            { _id: user._id, username: user.username, role: user.role },
             config.JwtSecret,
             {
                 expiresIn: 86400, // expires in 24 hours
@@ -83,7 +83,11 @@ const register = async (req, res) => {
         // if user is registered without errors
         // create a token
         const token = jwt.sign(
-            { id: retUser._id, username: retUser.username, role: retUser.role },
+            {
+                _id: retUser._id,
+                username: retUser.username,
+                role: retUser.role,
+            },
             config.JwtSecret,
             {
                 expiresIn: 86400, // expires in 24 hours

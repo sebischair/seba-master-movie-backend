@@ -41,14 +41,12 @@ const checkAuthentication = (req, res, next) => {
             });
 
         // if everything is good, save to request for use in other routes
-        req.userId = decoded.id;
+        req.userId = decoded._id;
         next();
     });
 };
 
 const checkIsAdmin = async (req, res, next) => {
-    console.log("checking admin", req.userId);
-
     // checkAuthentication must be executed before this method
     // if not req.userId is not defined
     let user = await UserModel.findById(req.userId);
@@ -57,15 +55,12 @@ const checkIsAdmin = async (req, res, next) => {
         // if the user is an admin continue with the execution
         next();
     } else {
-        console.log("no admin", user.role);
         // if the user is no admin return that the user has not the rights for this action
         return res.status(403).send({
             error: "Forbidden",
             message: "You have not the rights for this action.",
         });
     }
-
-    next();
 };
 
 const errorHandler = (err, req, res, next) => {
