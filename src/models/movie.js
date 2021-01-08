@@ -39,8 +39,9 @@ const MovieSchema = new mongoose.Schema(
         blurayRelease: Date,
         criticsRating: {
             type: Number,
-            min: 1,
+            min: 0,
             max: 5,
+            default: 0,
         },
         audienceRatings: [RatingSchema],
         actors: [ActorSchema],
@@ -61,12 +62,16 @@ MovieSchema.virtual("year").get(function () {
     if (this.theaterRelease) {
         return this.theaterRelease.getFullYear();
     } else {
-        return "No Release Year";
+        return -1;
     }
 });
 MovieSchema.virtual("avgAudienceRating").get(function () {
     let avgRating = 0;
     let ratings = 0;
+    // if there are no ratings return 0
+    if (this.audienceRatings.length === 0) {
+        return 0;
+    }
     this.audienceRatings.map((rating) => {
         if (typeof rating.rating === "number") {
             avgRating += rating.rating;
