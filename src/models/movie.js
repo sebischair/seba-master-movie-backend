@@ -62,7 +62,7 @@ MovieSchema.virtual("year").get(function () {
     if (this.theaterRelease) {
         return this.theaterRelease.getFullYear();
     } else {
-        return -1;
+        return undefined;
     }
 });
 MovieSchema.virtual("avgAudienceRating").get(function () {

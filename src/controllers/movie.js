@@ -3,15 +3,19 @@
 const MovieModel = require("../models/movie");
 
 const create = async (req, res) => {
+    // check if the body of the request contains all necessary properties
     if (Object.keys(req.body).length === 0)
         return res.status(400).json({
             error: "Bad Request",
             message: "The request body is empty",
         });
 
+    // handle the request
     try {
+        // create movie in database
         let movie = await MovieModel.create(req.body);
 
+        // return created movie
         return res.status(201).json(movie);
     } catch (err) {
         console.log(err);
@@ -24,14 +28,17 @@ const create = async (req, res) => {
 
 const read = async (req, res) => {
     try {
+        // get movie with id from database
         let movie = await MovieModel.findById(req.params.id).exec();
 
+        // if no movie with id is found, return 404
         if (!movie)
             return res.status(404).json({
                 error: "Not Found",
                 message: `Movie not found`,
             });
 
+        // return gotten movie
         return res.status(200).json(movie);
     } catch (err) {
         console.log(err);
@@ -43,6 +50,7 @@ const read = async (req, res) => {
 };
 
 const update = async (req, res) => {
+    // check if the body of the request contains all necessary properties
     if (Object.keys(req.body).length === 0) {
         return res.status(400).json({
             error: "Bad Request",
@@ -50,7 +58,9 @@ const update = async (req, res) => {
         });
     }
 
+    // handle the request
     try {
+        // find and update movie with id
         let movie = await MovieModel.findByIdAndUpdate(
             req.params.id,
             req.body,
@@ -60,6 +70,7 @@ const update = async (req, res) => {
             }
         ).exec();
 
+        // return updated movie
         return res.status(200).json(movie);
     } catch (err) {
         console.log(err);
@@ -72,8 +83,10 @@ const update = async (req, res) => {
 
 const remove = async (req, res) => {
     try {
+        // find and remove movie
         await MovieModel.findByIdAndRemove(req.params.id).exec();
 
+        // return message that movie was deleted
         return res
             .status(200)
             .json({ message: `Movie with id${req.params.id} was deleted` });
@@ -88,8 +101,10 @@ const remove = async (req, res) => {
 
 const list = async (req, res) => {
     try {
+        // get all movies in database
         let movies = await MovieModel.find({}).exec();
 
+        // return gotten movies
         return res.status(200).json(movies);
     } catch (err) {
         console.log(err);

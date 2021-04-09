@@ -7,7 +7,7 @@ const config = require("../config");
 const UserModel = require("../models/user");
 
 const login = async (req, res) => {
-    console.log("login", req.body);
+    // check if the body of the request contains all necessary properties
     if (!Object.prototype.hasOwnProperty.call(req.body, "password"))
         return res.status(400).json({
             error: "Bad Request",
@@ -20,7 +20,9 @@ const login = async (req, res) => {
             message: "The request body must contain a username property",
         });
 
+    // handle the request
     try {
+        // get the user form the database
         let user = await UserModel.findOne({
             username: req.body.username,
         }).exec();
@@ -54,7 +56,7 @@ const login = async (req, res) => {
 };
 
 const register = async (req, res) => {
-    console.log("register", req.body);
+    // check if the body of the request contains all necessary properties
     if (!Object.prototype.hasOwnProperty.call(req.body, "password"))
         return res.status(400).json({
             error: "Bad Request",
@@ -67,17 +69,16 @@ const register = async (req, res) => {
             message: "The request body must contain a username property",
         });
 
-    // const user = Object.assign(req.body, {
-    //     password: bcrypt.hashSync(req.body.password, 8),
-    // });
-
+    // create a user object
     const user = {
         username: req.body.username,
         password: bcrypt.hashSync(req.body.password, 8),
         role: req.body.isAdmin ? "admin" : "member",
     };
 
+    // handle the request
     try {
+        // create the user in the database
         let retUser = await UserModel.create(user);
 
         // if user is registered without errors
@@ -94,8 +95,8 @@ const register = async (req, res) => {
             }
         );
 
+        // return generated token
         res.status(200).json({
-            //user: { _id: retUser._id, username: retUser.username },
             token: token,
         });
     } catch (err) {
@@ -115,6 +116,7 @@ const register = async (req, res) => {
 
 const me = async (req, res) => {
     try {
+        // get own user name from database
         let user = await UserModel.findById(req.userId)
             .select("username")
             .exec();
