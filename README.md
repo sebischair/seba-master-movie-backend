@@ -1,10 +1,10 @@
-# sebamaster-movie-backend application
+# seba-master-movie-backend application
 
-sebamaster-movie-frontend application can be found [here](https://github.com/sebischair/sebamaster-movie-frontend)
+seba-master-movie-frontend application can be found [here](https://github.com/sebischair/seba-master-movie-frontend)
 
 ## Prerequisites
 
-Both for the back end and front end application check
+Both for the backend and frontend application:
 
 * nodejs [official website](https://nodejs.org/en/) - nodejs includes [npm](https://www.npmjs.com/) (node package manager)
 
@@ -16,7 +16,7 @@ Just for the backend application:
 
 Go to your project root folder via command line
 ```
-cd path/to/workspace/sebamaster-movie-backend
+cd path/to/workspace/seba-master-movie-backend
 ```
 
 **Install node dependencies**
@@ -31,19 +31,6 @@ npm install
 * Start the database server
 ```
 mongod --dbpath relative/path/to/database
-```
-* Create all database schemes and import data to begin with
-```
-mongorestore dump/
-```
-
-**Set the environment variables**
-
-This variables are based in your local configuration
-```bash
-export PORT=3000
-export MONGODB_URI="mongodb://localhost:27017/moviedb"
-export JWT_SECRET="very secret secret"
 ```
 
 ## Start the project
