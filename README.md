@@ -30,7 +30,7 @@ npm install
 * Create a new directory where your database will be stored (it's a good idea to separate data and business logic - the data directory should be on a different place than your app)
 * Start the database server
 ```
-mongod --dbpath relative/path/to/database
+mongod --dbpath "path/to/database"
 ```
 
 ## Start the project
