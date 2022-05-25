@@ -6,24 +6,24 @@ const mongoose = require("mongoose");
 const UserSchema = new mongoose.Schema({
     username: {
         type: String,
-        required: true,
+        required: true
     },
     password: {
         type: String,
         required: true,
-        unique: true,
+        unique: true
     },
     // role of the user, used for rights management
     role: {
         type: String,
-        // role can only take the value "member" and "admin"
+        // role can only take the values "member" and "admin"
         enum: ["member", "admin"],
-        // if not specified the role member is choosen
-        default: "member",
-    },
+        // if not specified the role "member" is chosen
+        default: "member"
+    }
 });
 
 UserSchema.set("versionKey", false);
 
-// Export the Movie model
+// Export the User model
 module.exports = mongoose.model("User", UserSchema);
