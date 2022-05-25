@@ -37,7 +37,7 @@ mongod --dbpath "path/to/database"
 
 **Development environment**
 ```bash
-npm run devstart
+npm run dev
 ```
 
 **Production environment**
